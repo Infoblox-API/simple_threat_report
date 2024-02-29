@@ -83,7 +83,7 @@ log = logging.getLogger(__name__)
 # ** Functions **
 
 
-def parseargs():
+def parseargs(raw_args=None):
     '''
     Parse Arguments Using argparse
 
@@ -114,7 +114,7 @@ def parseargs():
     parse.add_argument('-d', '--debug', action='store_true',
                        help="Enable debug messages")
 
-    return parse.parse_args()
+    return parse.parse_args(raw_args)
 
 
 def setup_logging(debug):
