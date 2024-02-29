@@ -26,7 +26,7 @@
 
  Author: Chris Marrison
 
- Date Last Updated: 20230227
+ Date Last Updated: 20240228
 
  .. todo::
     * Option to treat URLs as hostnames i.e. parse URL to extract host
@@ -61,7 +61,7 @@ POSSIBILITY OF SUCH DAMAGE.
 
 ------------------------------------------------------------------------
 """
-__version__ = '3.2.0'
+__version__ = '3.2.2'
 __author__ = 'Chris Marrison'
 
 import bloxone
@@ -582,11 +582,6 @@ def gen_report(activethreats, totalthreats, web_categories, filehandle):
             if activethreats[item][0] > 0:
                 with_active += 1
 
-            # Human Output
-            print('Host: {}, Active threats: {}, Active profiles: {}, '
-                  'Classes: {}' .format(item, activethreats[item][0],
-                                        activethreats[item][1],
-                                        activethreats[item][2]))
 
             # File output
             if filehandle:
@@ -594,6 +589,12 @@ def gen_report(activethreats, totalthreats, web_categories, filehandle):
                                                activethreats[item][1],
                                                activethreats[item][2]),
                       file=filehandle)
+            else:
+                # Human Output
+                print('Host: {}, Active threats: {}, Active profiles: {}, '
+                    'Classes: {}' .format(item, activethreats[item][0],
+                                            activethreats[item][1],
+                                            activethreats[item][2]))
 
         # Add Summary
         # Human
@@ -632,15 +633,6 @@ def gen_report(activethreats, totalthreats, web_categories, filehandle):
             else:
                 action = ''
 
-            # Human Output
-            print('Host: {}, Action: {}, Active threats: {}, Active profiles: {}, '
-                  'Total threats: {}, Profiles: {}, Classes: {}, '
-                  'Last seen: {}, Last Expiry: {}, Domain Checked: {}, Web Categories: {}'
-                  .format(item, action, activethreats[item][0], activethreats[item][1],
-                          totalthreats[item][0], totalthreats[item][1],
-                          totalthreats[item][2], totalthreats[item][3],
-                          totalthreats[item][4], totalthreats[item][5],
-                          web_categories.get(item)))
             # File output
             if filehandle:
                 print(f'{item},{action},{activethreats[item][0]}, ' +
@@ -649,6 +641,17 @@ def gen_report(activethreats, totalthreats, web_categories, filehandle):
                       f'{totalthreats[item][3]},{totalthreats[item][4]},' +
                       f'{totalthreats[item][5]},"{web_categories.get(item)}"',
                       file=filehandle)
+            else:
+                # Human Output
+                print('Host: {}, Action: {}, Active threats: {}, Active profiles: {}, '
+                    'Total threats: {}, Profiles: {}, Classes: {}, '
+                    'Last seen: {}, Last Expiry: {}, Domain Checked: {}, Web Categories: {}'
+                    .format(item, action, activethreats[item][0], activethreats[item][1],
+                            totalthreats[item][0], totalthreats[item][1],
+                            totalthreats[item][2], totalthreats[item][3],
+                            totalthreats[item][4], totalthreats[item][5],
+                            web_categories.get(item)))
+
         # Add Summary
         # Human
         print('Summary: Total = {}, Active = {}, Threats = {}, No info = {}'
@@ -667,7 +670,7 @@ def gen_report(activethreats, totalthreats, web_categories, filehandle):
     return
 
 
-def main():
+def main(raw_args=None):
     '''
     * Main *
 
@@ -688,7 +691,7 @@ def main():
     # profiles = ''
 
     # Parse Arguments and configure
-    args = parseargs()
+    args = parseargs(raw_args)
 
     # Set up logging
     debug = args.debug
